@@ -32,10 +32,9 @@ class ApiManager extends GetConnect {
   }
 
 
-
-  Future<BaseModel<T>> getApiCall<T>(String url,
-      { Map<String, String>? headers}) =>
-      get(url,  headers: headers).parse();
+  Future<BaseModel<T>> getApiCall<T>(
+          {Map<String, dynamic>? query, String? url}) =>
+      get(url!, query: query).parse();
 }
 
 extension ApiHelper<T> on Future<Response<T>> {
@@ -77,19 +76,19 @@ extension ApiHelper<T> on Future<Response<T>> {
         case 422:
           {
             var message =
-            JsonConvert.fromJsonAsT<ErrorModelEntity>(response.body);
+                JsonConvert.fromJsonAsT<ErrorModelEntity>(response.body);
             return BaseModel()
-              ..setException(ApiError.withApiError(
-                  message.error ?? "error_occurred".tr));
+              ..setException(
+                  ApiError.withApiError(message.error ?? "error_occurred".tr));
           }
         case 403:
           {
             if (response.body != null) {
               var message =
-              JsonConvert.fromJsonAsT<ErrorModelEntity>(response.body);
+                  JsonConvert.fromJsonAsT<ErrorModelEntity>(response.body);
               return BaseModel()
-                ..setException(ApiError.withApiError(
-                    message.error ?? "unauthorised".tr));
+                ..setException(
+                    ApiError.withApiError(message.error ?? "unauthorised".tr));
             } else {
               return BaseModel()
                 ..setException(ApiError.withApiError("unauthorised".tr));
@@ -120,7 +119,6 @@ extension DisplayError<T> on Future<BaseModel<T>> {
     if (data.data != null)
       return data.data;
     else {
-      print("=display=>${data.getException}");
       showErrorSnackBar(data.getException);
     }
     return null;

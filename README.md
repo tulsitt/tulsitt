@@ -125,32 +125,9 @@ flutter:
 
 
 
-#### CICD Integration reference
 
   
- * iOS
-    > http://box.indianic.biz/index.php/s/brU6zABH219C89V/authenticate
-    > Password: indianic
-* Android
-    **CI/CD**(https://docs.google.com/presentation/d/1mOMYmVSEH9w4SxexTCBy8epngfyXefFXP_K07a8GtL0/edit?usp=sharing)
-    1. Enable runner: Git project setting -> CI/CD expand the Runner section -> Enable for available runner
-    2. Environment variables: Git project setting -> CI/CD expand the environment variables section
-        * ANDROID_SDK_PATH
-        * DEBUG_BUILD_NAME
-        * DEBUG_KEYSTORE_FILE
-        * DEVELOPER_EMAILS
-        * KEYSTORE_FILE
-        * KEYSTORE_PASSWORD
-        * PROJECT_NAME
-        * KEY_ALIAS
-        * KEY_PASSWORD
-        * RELEASE_BUILD_NAME
-        * SEND_OTA_TOKEN
-        * URLOFMM
-    3. Add script file into the project folder with file name ".gitlab-ci.yml" in Project Level
-        (https://docs.google.com/document/d/1-w6sAI_eDcuHseXiKzE-huzEcYb0K0oHIyHJZWi5umY/edit?usp=sharing)
 
-#### Git Tree 
 ```bash
 .
 ├── README.md
@@ -210,15 +187,6 @@ flutter:
     └── widget_test.dart
 ```
 
-## Contributer
-- Flutter Team: 
-Bhargav Sejpal,
-Nikunj Rami
 
 ## Project Detail
 
-| Flutter Template    | Flutter Base Template          |
-|---------------------|--------------------------------|
-| ERP ID              | I2020-5861                     |
-| Project Manager     | -                              |
-| Tech Lead           | Tarun Malpani, Haresh Makadiya |

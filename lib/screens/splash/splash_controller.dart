@@ -15,7 +15,7 @@ class SplashController extends GetxController {
   }
 
   void initialize() {
-    4400.millSecDelay.then((dynamic value) => Get.off(() => HomeScreen()));
+    3000.millSecDelay.then((dynamic value) => Get.off(() => HomeScreen()));
   }
 
   @override

@@ -6,7 +6,7 @@ String getIconPath(String imageName) {
   return "assets/icons/$imageName";
 }
 
-enum ImageConst { check, cross, splash, loader }
+enum ImageConst { check, cross, splash, loader,grid,list }
 
 extension imagePath on ImageConst {
   String getPath() {
@@ -19,6 +19,10 @@ extension imagePath on ImageConst {
         return getLottie("splash_screen.json");
       case ImageConst.loader:
         return getLottie("loader_boll.json");
+    case ImageConst.grid:
+        return getIconPath("grid.png");
+    case ImageConst.list:
+        return getIconPath("list.png");
     }
   }
 }
