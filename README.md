@@ -3,10 +3,10 @@
 ## Requirements
 
 - iOS 11+
-- Xcode 11.1+
+- Xcode 12.1+
 - Android API 4.x +
-- Android Studio 3.0 +
-- Flutter 1.17.x
+- Android Studio 4.0 +
+- Flutter 2.8.1
 
 
 ## Installation
@@ -24,56 +24,38 @@ flutter:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-  
-  # Effective Dart: Style Guide.
-  # https://pub.dev/packages/lint
-  # Compulsory
-  lint: ^1.0.0
-
-  # for bloc pattern
-  # https://pub.dev/packages/rxdart
-  # Optional
-  rxdart: ^0.24.1
-
-  # for localozation
-  # https://pub.dev/packages/easy_localization
-  # Compulsory
-  easy_localization: ^2.3.2
-
   # Service locator
   # https://pub.dev/packages/get_it
-  # Compulsory
-  get_it: ^4.0.2
-
-  # Shared Prefrence <=> User Default
-  # https://pub.dev/packages/shared_preferences
-  # Compulsory
-  shared_preferences: ^0.5.7+3
+  get_it: ^7.2.0
 
   # Lottie for animation
   # https://pub.dev/packages/lottie
   # Optional
-  lottie: ^0.4.0+1
+  lottie: ^1.1.0
 
   # For check internet connectivity
   # https://pub.dev/packages/connectivity
   # Optional
-  connectivity: ^0.4.9
+  connectivity: ^3.0.6
 
-  # For encrypt / decrypt
-  # https://pub.dev/packages/encrypt
-  # Optional
-  encrypt: ^4.0.2
+  # For state management
+  # https://pub.dev/packages/get/install
+  get: ^4.3.5
 
-  # For device info
-  # https://pub.dev/packages/device_info
-  # Optional
-  device_info: ^0.4.2+4
+  # For show loading dialog
+  # https://pub.dev/packages/load/install
+  load: ^1.0.0
 
-  # For flutter network calls
-  # https://pub.dev/packages/dio/install
-  # Optional if no network connectivity
-  dio: ^3.0.10
+  # For svg image support
+  # https://pub.dev/packages/flutter_svg/install
+  flutter_svg: ^0.22.0
+  #Provides internationalization and localization facilities, including message translation, plurals and genders, date/number formatting and parsing, and bidirectional text
+  #https://pub.dev/packages/intl/versions/0.17.0-nullsafety.2
+  intl: ^0.17.0
+
+  # For A Flutter widget for rendering HTML and CSS as Flutter widgets.
+  #https://pub.dev/packages/flutter_html/install
+  flutter_html: ^2.2.1
 
  
 ```
@@ -84,49 +66,15 @@ flutter:
 - Constants
 - Environment
 - Extensions
-- API Helper 
+- ApiManager 
 - Connectivity Helper 
 - Haptic Helper 
-- Shared Preference Helper
-- Validation Helper
 - Theme 
-- Loader 
-- Toast
+
 
 #### Known Issues
 
 - Loader Dismissed on press of physical back button
-
-#### CICD Integration steps
-
-* Create Profile folder
-    1. Create Profile folder to root of project directory
-    2. Add ios certificates files like .p12 & .mobileprovision
-* Drag & drop create-keychain.sh to root of project directory
-    1. Update # Development parameters at beginig of file
-    2. Update CERTIFICATE_NAME with your certificate .p12 file(Note: please not include .p12 extension)
-    3. Update KEY_PASSWORD with password of .p12 file
-* Drag & drop .gitlab-ci.yml to root of project directory
-    1. Update APP_NAME parameter with your project name
-    2. Update client_email parameter with you client and PM email id using ',' seperated
-* Drag & drop build.sh to root of project directory
-    1. Update array parameters add your provisioning profile name to this array
-* Drag & drop ExportOptions.plist file inside ios folder
-    1. update bundle id with your ios project bundle id
-    2. update profisioning profile name(Please Make sure of profisioning profile name not a File name.)
-* GitLab repository side setup for CI/CD
-    1. Enable runner: Git project setting -> CI/CD expand the Runner section -> Enable for available runner
-    2. Environment variables: Git project setting -> CI/CD expand the environment variables section
-    3. Add below parameters to git lab. Make sure name of parameters should be same as mention blow
-        * DEVELOPER_EMAIL : developer email address
-        * MMWEBHOOKURL : "https://chat.indianic.com/hooks/7sdmnjbd5iyk9b5qekxyo45rhr" (Fix for all project. it is flutter team bot url)
-        * SENDOTA_TOKEN : “8f5ae02a-155f-420d-ac20-bc4b987c9e39” (Fixed for all projects)
-    4. This are default parameters required for flutter CI/CD. you can check below reference link for more parameters
-
-
-
-
-  
 
 ```bash
 .
@@ -134,7 +82,6 @@ flutter:
 ├── analysis_options.yaml
 ├── android
 ├── assets
-│   ├── fonts
 │   ├── images
 │   └── lottie    
 ├── build
@@ -144,49 +91,41 @@ flutter:
 │    └── ExportOptions.plist
 ├── lib
 │   ├── main.dart
-│   ├── reusable_component
-│   │   ├── loader
-│   │   └── toast    
+│   ├── commoncompant
+│   │   ├── alerts
+│   │   └── common    
+│   │   └── ErrorView    
+│   │   └── GradientButtonWidget    
+│   │   └── loader 
 │   ├── screens
-│   │   ├── login
-│   │   │   └── login.dart
+│   │   ├── splash
+│   │   │   └── splash.dart
+│   │   │   └── splash_controller.dart
+│   │   ├── home
+│   │   │   └── home_screen.dart
+│   │   │   └── home_controller.dart
+│   │   ├── details
+│   │   │   └── details_screen.dart
+│   │   │   └── details_controller.dart
+
 │   └── utils
 │       ├── common
-│       │   ├── config.dart
 │       │   ├── constants.dart
+│       │   ├── image_const.dart
 │       │   └── env.dart
 │       ├── extensions
-│       │   ├── align_extension.dart
-│       │   ├── buildcontext_extension.dart
+│       │   ├── duration_extension.dart
 │       │   ├── double_extension.dart
 │       │   ├── extension.dart
-│       │   ├── list_extension.dart
-│       │   ├── padding_extension.dart
-│       │   ├── string_extension.dart
-│       │   └── text_style_extension.dart
+│       │   ├── text_style_extension.dart
 │       ├── helpers
-│       │   ├── api_provider.dart
 │       │   ├── connectivity.dart
-│       │   ├── haptic_helper.dart
-│       │   ├── shared_pref_helper.dart
-│       │   └── validation_helper.dart
 │       └── theme
 │           ├── colors.dart
 │           └── style.dart
-├── Profile
-├── .gitlab-ci.yml
-├── build.sh
-├── create-keychain.sh
 ├── pubspec.lock
 ├── pubspec.yaml
-├── resources
-│   └── langs
-│       ├── ae.json
-│       └── en.json
-└── test
-    └── widget_test.dart
+├── lang
+│   └── localization
 ```
-
-
-## Project Detail
 

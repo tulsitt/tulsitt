@@ -162,12 +162,12 @@ class HomeScreen extends StatelessWidget {
                               width: 30,
                               padding: EdgeInsets.all(7),
                               decoration: BoxDecoration(
-                                  color: AppColors.mainColor,
-                                  borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.black26,
+                                  borderRadius: BorderRadius.circular(5)),
                               child: Text(
                                 gameModelResults.metacritic.toString(),
                                 textAlign: TextAlign.center,
-                                style: Get.textTheme.caption!.regular
+                                style: Get.textTheme.caption!.bold
                                     .apply(color: AppColors.colorWhite),
                               ),
                             )
@@ -177,7 +177,7 @@ class HomeScreen extends StatelessWidget {
                         Text(
                           dateFormat(gameModelResults.released!),
                           style: Get.textTheme.caption!.regular
-                              .apply(color: AppColors.secondColor),
+                              .apply(color: AppColors.secondDarkColor),
                         )
                       ],
                     ),
@@ -256,12 +256,12 @@ class HomeScreen extends StatelessWidget {
                     padding:
                         EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 2),
                     decoration: BoxDecoration(
-                        color: AppColors.mainColor,
-                        borderRadius: BorderRadius.circular(20)),
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.circular(5)),
                     child: Text(
-                      'Socre: ${gameModelResults.metacritic.toString()}',
+                      gameModelResults.metacritic.toString(),
                       textAlign: TextAlign.center,
-                      style: Get.textTheme.caption!.regular
+                      style: Get.textTheme.caption!.bold
                           .apply(color: AppColors.colorWhite),
                     ),
                   )
@@ -272,6 +272,7 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    10.0.heightSizedBox,
                     Text(
                       gameModelResults.name!,
                       maxLines: 1,
@@ -279,11 +280,11 @@ class HomeScreen extends StatelessWidget {
                       style: Get.textTheme.subtitle2!.bold
                           .apply(color: AppColors.colorWhite),
                     ),
-                    5.0.widthSizedBox,
+                    7.0.heightSizedBox,
                     Text(
                       dateFormat(gameModelResults.released!),
                       style: Get.textTheme.caption!.regular
-                          .apply(color: AppColors.colorBlack),
+                          .apply(color: AppColors.secondDarkColor),
                     ),
                     5.0.widthSizedBox,
                   ],

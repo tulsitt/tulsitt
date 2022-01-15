@@ -8,7 +8,7 @@ class HomeController extends GetxController with StateMixin<dynamic> {
   var _page = 1;
   RxBool isLoadMoreAvailable = false.obs;
   RxBool isLoadMoreVisible = false.obs;
-  RxBool isGridView = false.obs;
+  RxBool isGridView = true.obs;
 
   ScrollController scrollController = ScrollController();
 
@@ -54,7 +54,7 @@ class HomeController extends GetxController with StateMixin<dynamic> {
 
     var gameModel = await apiCall.getApiCall<GameModelEntity>(
         url: APIConstant.gameList, query: queryParams);
-    if (gameModel.data?.count != 0) {
+    if (gameModel.data != null) {
       if (gameModel.data!.results!.isNotEmpty) {
         isLoadMoreAvailable.value = gameModel.data!.next != null;
         if (_page == 1) {

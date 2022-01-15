@@ -77,7 +77,7 @@ class DetailsScreen extends StatelessWidget {
                                     controller.detailsModelEntity!.description),
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 10,
-                                style: Get.textTheme.bodyText1!.bold
+                                style: Get.textTheme.bodyText1!.medium
                                     .apply(color: AppColors.colorWhite),
                               ),
                             ),
@@ -173,7 +173,7 @@ class DetailsScreen extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Text(
         title,
-        style: Get.textTheme.subtitle1!.bold.apply(color: AppColors.colorGreen),
+        style: Get.textTheme.subtitle1!.bold.apply(color: AppColors.colorBlack),
       ),
     );
   }

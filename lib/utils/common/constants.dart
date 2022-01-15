@@ -28,7 +28,7 @@ class RequestKeys {
 
   String get platformsValue => '5';
 
-  String get keyValue => '02ef6ba5d13444ee86bad607e8bce3f4';
+  String get keyValue => '3dcdea8121a247ce82e32920822e7f54';
 
   String get orderingValue => 'descending';
 
