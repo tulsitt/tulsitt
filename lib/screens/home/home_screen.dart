@@ -103,11 +103,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget getListItem(GameModelResults gameModelResults) {
     return InkWell(
-      onTap: () => Get.to(() => DetailsScreen(
-            id: gameModelResults.id.toString(),
-            name: gameModelResults.name,
-            image: gameModelResults.backgroundImage,
-          )),
+      onTap: () => goToDetailScreen(gameModelResults),
       child: Hero(
         tag: gameModelResults.id!.toString(),
         child: Padding(
@@ -152,12 +148,14 @@ class HomeScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              gameModelResults.name!,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: Get.textTheme.subtitle2!.bold
-                                  .apply(color: AppColors.colorWhite),
+                            Expanded(
+                              child: Text(
+                                gameModelResults.name!,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Get.textTheme.subtitle2!.bold
+                                    .apply(color: AppColors.colorWhite),
+                              ),
                             ),
                             Container(
                               height: 30,
@@ -193,6 +191,14 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  goToDetailScreen(GameModelResults gameModelResults) {
+    Get.to(() => DetailsScreen(
+          id: gameModelResults.id.toString(),
+          name: gameModelResults.name,
+          image: gameModelResults.backgroundImage,
+        ));
+  }
+
   gridView() {
     return Center(
       child: Padding(
@@ -215,10 +221,7 @@ class HomeScreen extends StatelessWidget {
 
   getGridItem(GameModelResults gameModelResults) {
     return InkWell(
-        onTap: () => Get.to(() => DetailsScreen(
-              id: gameModelResults.id.toString(),
-              name: gameModelResults.name,
-            )),
+        onTap: () => goToDetailScreen(gameModelResults),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -246,8 +249,12 @@ class HomeScreen extends StatelessWidget {
                             topRight: Radius.circular(8))),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 10,top:10,),
-                    padding: EdgeInsets.only(left: 5,right: 5,top:2,bottom: 2),
+                    margin: EdgeInsets.only(
+                      left: 10,
+                      top: 10,
+                    ),
+                    padding:
+                        EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 2),
                     decoration: BoxDecoration(
                         color: AppColors.mainColor,
                         borderRadius: BorderRadius.circular(20)),

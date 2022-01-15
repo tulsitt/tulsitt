@@ -28,7 +28,6 @@ class DetailsScreen extends StatelessWidget {
           ),
         ),
         child: NestedScrollView(
-          physics: ScrollPhysics(),
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
@@ -50,6 +49,7 @@ class DetailsScreen extends StatelessWidget {
                             height: Get.size.height * 0.5,
                             width: Get.size.width,
                             fit: BoxFit.fill,
+                            placeholderFit:BoxFit.fill ,
                             placeholder: NetworkImage(defaultImage),
                             image: NetworkImage(image ?? defaultImage)),
                         Container(
@@ -65,47 +65,51 @@ class DetailsScreen extends StatelessWidget {
             ];
           },
           body: Container(child: Builder(builder: (context) {
-            return controller.obx(
-                    (state) => ListView(
-                    shrinkWrap: true,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          parseHtmlString(
-                              controller.detailsModelEntity!.description),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 10,
-                          style: Get.textTheme.bodyText1!.bold
-                              .apply(color: AppColors.colorWhite),
+            return Column(
+              children: [
+                controller.obx(
+                    (state) => Expanded(
+                          child: ListView(children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                parseHtmlString(
+                                    controller.detailsModelEntity!.description),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 10,
+                                style: Get.textTheme.bodyText1!.bold
+                                    .apply(color: AppColors.colorWhite),
+                              ),
+                            ),
+                            5.0.heightSizedBox,
+                            getTitle('genres'.tr),
+                            5.0.heightSizedBox,
+                            getGeneraView(),
+                            5.0.heightSizedBox,
+                            getTitle('publishers'.tr),
+                            5.0.heightSizedBox,
+                            getPublishersView(),
+                            getTitle('platforms'.tr),
+                            5.0.heightSizedBox,
+                            getPlatformsView(),
+                          ]),
                         ),
-                      ),
-                      5.0.heightSizedBox,
-                      getTitle('genres'.tr),
-                      5.0.heightSizedBox,
-                      getGeneraView(),
-                      5.0.heightSizedBox,
-                      getTitle('publishers'.tr),
-                      5.0.heightSizedBox,
-                      getPublishersView(),
-                      getTitle('platforms'.tr),
-                      5.0.heightSizedBox,
-                      getPlatformsView(),
-                    ]),
-                onLoading: getLoader(),
-                onEmpty: ErrorView(
-                    apiErrorMessage: "game_details_empty".tr,
-                    buttonText: "try_again".tr,
-                    onButtonPressed: () {
-                      controller.getGameDetails(id!);
-                    }), onError: (error) {
-              return ErrorView(
-                  apiErrorMessage: error,
-                  buttonText: "try_again".tr,
-                  onButtonPressed: () {
-                    controller.getGameDetails(id!);
-                  });
-            });
+                    onLoading: getLoader(),
+                    onEmpty: ErrorView(
+                        apiErrorMessage: "game_details_empty".tr,
+                        buttonText: "try_again".tr,
+                        onButtonPressed: () {
+                          controller.getGameDetails(id!);
+                        }), onError: (error) {
+                  return ErrorView(
+                      apiErrorMessage: error,
+                      buttonText: "try_again".tr,
+                      onButtonPressed: () {
+                        controller.getGameDetails(id!);
+                      });
+                })
+              ],
+            );
           })),
         ),
       ),

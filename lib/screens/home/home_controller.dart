@@ -43,9 +43,8 @@ class HomeController extends GetxController with StateMixin<dynamic> {
       _page = 1;
       if (!isRefresh) change(gameList, status: RxStatus.loading());
     }
-    print('page===>${_page}');
     Map<String, String> queryParams = {
-      APIConstant.requestKeys.dates: '${getStartDate()}-${getEndDate()}',
+      APIConstant.requestKeys.dates: '${getStartDate()},${getEndDate()}',
       APIConstant.requestKeys.key: APIConstant.requestKeys.keyValue,
       APIConstant.requestKeys.ordering: APIConstant.requestKeys.orderingValue,
       APIConstant.requestKeys.page: _page.toString(),
