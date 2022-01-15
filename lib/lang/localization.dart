@@ -43,6 +43,15 @@ class Localization extends Translations {
               'You must connect to Wi-fi or a Cellular Network to get online again',
           ' unexpected_error': 'Unexpected internal server error.',
           'unauthorised': 'Unauthorised, please login again',
+          'game_empty': 'No game found',
+          'game_details_empty': 'Game detail not found.',
+          'try_again': 'Try Again',
+          'Score': 'Score',
+          'genres': 'Genres',
+          'publishers': 'Publishers',
+          'platforms': 'Platforms',
+          'video_game': 'Video Game',
+
         },
 
         /// you can add more language string here

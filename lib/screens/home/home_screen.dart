@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_base/commoncompant/appbar.dart';
 import 'package:flutter_base/commoncompant/error_view.dart';
 import 'package:flutter_base/commoncompant/loader.dart';
 import 'package:flutter_base/model/game_model_entity.dart';
+import 'package:flutter_base/screens/details/details_screen.dart';
 import 'package:flutter_base/utils/common/constants.dart';
 import 'package:flutter_base/utils/common/image_const.dart';
 import 'package:flutter_base/utils/theme/colors.dart';
@@ -19,51 +19,74 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        backgroundColor: AppColors.mainColor,
+        actions: [
+          Obx(() => Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: GestureDetector(
+                  onTap: () => controller.isGridView.value =
+                      !controller.isGridView.value,
+                  child: Image.asset(
+                    controller.isGridView.value == true
+                        ? ImageConst.list.getPath()
+                        : ImageConst.grid.getPath(),
+                    width: 20,
+                    height: 20,
+                    color: AppColors.colorWhite,
+                  ),
+                ),
+              ))
+        ],
+        title: Text(
+          'video_game'.tr,
+          maxLines: 2,
+          style:
+              Get.textTheme.subtitle1!.bold.apply(color: AppColors.colorWhite),
+        ),
+      ),
       body: Container(
-        decoration: BoxDecoration(gradient: getGradient),
-        child: Column(
-          children: [
-            Obx(() => CustomAppBar(
-                  title: 'Home',
-                  icon: controller.isGridView.value == true
-                      ? ImageConst.list.getPath()
-                      : ImageConst.grid.getPath(),
-                  onPress: () => {
-                    controller.isGridView.value = !controller.isGridView.value
-                  },
-                )),
-            controller.obx(
-                (state) => Expanded(
-                      child: Obx(() => controller.isGridView.value == true
-                          ? gridView()
-                          : listView()),
-                    ),
-                onLoading: getLoader(),
-                onEmpty: ErrorView(
-                    apiErrorMessage: "client_empty".tr,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(ImageConst.background.getPath()),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            children: [
+              controller.obx(
+                  (state) => Expanded(
+                        child: Obx(() => controller.isGridView.value == true
+                            ? gridView()
+                            : listView()),
+                      ),
+                  onLoading: getLoader(),
+                  onEmpty: ErrorView(
+                      apiErrorMessage: "game_empty".tr,
+                      buttonText: "try_again".tr,
+                      onButtonPressed: () {
+                        controller.getGameList();
+                      }), onError: (error) {
+                return ErrorView(
+                    apiErrorMessage: error,
                     buttonText: "try_again".tr,
                     onButtonPressed: () {
                       controller.getGameList();
-                    }), onError: (error) {
-              return ErrorView(
-                  apiErrorMessage: error,
-                  buttonText: "try_again".tr,
-                  onButtonPressed: () {
-                    controller.getGameList();
-                  });
-            }),
-            Obx(() => Visibility(
-                  visible: controller.isLoadMoreVisible.value,
-                  child: Lottie.asset(
-                    ImageConst.loader.getPath(),
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
-                ))
-          ],
-        ),
-      ),
+                    });
+              }),
+              Obx(() => Visibility(
+                    visible: controller.isLoadMoreVisible.value,
+                    child: Lottie.asset(
+                      ImageConst.loader.getPath(),
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                    ),
+                  ))
+            ],
+          )),
     );
   }
 
@@ -79,72 +102,91 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget getListItem(GameModelResults gameModelResults) {
-    return Padding(
-      padding: const EdgeInsets.only( top: 10, left: 10, right: 10),
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.white70, width: 1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        color: Colors.black26,
+    return InkWell(
+      onTap: () => Get.to(() => DetailsScreen(
+            id: gameModelResults.id.toString(),
+            name: gameModelResults.name,
+            image: gameModelResults.backgroundImage,
+          )),
+      child: Hero(
+        tag: gameModelResults.id!.toString(),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15.0),
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            color: Colors.white12,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15.0),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      ),
+                      child: FadeInImage(
+                          placeholder: NetworkImage(defaultImage),
+                          fit: BoxFit.fill,
+                          image: NetworkImage(
+                              gameModelResults.backgroundImage ??
+                                  defaultImage)),
+                    ),
                   ),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        gameModelResults.backgroundImage ?? defaultImage),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10.0),
-                  ),
-                  child: FadeInImage.assetNetwork(
-                      placeholder: defaultImage,
-                      fit: BoxFit.fill,
-                      image: gameModelResults.backgroundImage ?? defaultImage),
-                ),
+                  10.0.widthSizedBox,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        10.0.heightSizedBox,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              gameModelResults.name!,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Get.textTheme.subtitle2!.bold
+                                  .apply(color: AppColors.colorWhite),
+                            ),
+                            Container(
+                              height: 30,
+                              width: 30,
+                              padding: EdgeInsets.all(7),
+                              decoration: BoxDecoration(
+                                  color: AppColors.mainColor,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Text(
+                                gameModelResults.metacritic.toString(),
+                                textAlign: TextAlign.center,
+                                style: Get.textTheme.caption!.regular
+                                    .apply(color: AppColors.colorWhite),
+                              ),
+                            )
+                          ],
+                        ),
+                        5.0.heightSizedBox,
+                        Text(
+                          dateFormat(gameModelResults.released!),
+                          style: Get.textTheme.caption!.regular
+                              .apply(color: AppColors.secondColor),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               ),
-              10.0.widthSizedBox,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    10.0.heightSizedBox,
-                    Text(
-                      gameModelResults.name!,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Get.textTheme.subtitle2!.bold
-                          .apply(color: AppColors.colorWhite),
-                    ),
-                    5.0.heightSizedBox,
-                    Text(
-                      'Metacritic Score:${gameModelResults.metacritic.toString()} ',
-                      style: Get.textTheme.caption!.regular
-                          .apply(color: AppColors.colorWhite),
-                    ),
-                    5.0.heightSizedBox,
-                    Text(
-                      gameModelResults.released!,
-                      style: Get.textTheme.caption!.regular
-                          .apply(color: AppColors.secondDarkColor),
-                    )
-                  ],
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),
@@ -173,31 +215,53 @@ class HomeScreen extends StatelessWidget {
 
   getGridItem(GameModelResults gameModelResults) {
     return InkWell(
-        onTap: () => {},
+        onTap: () => Get.to(() => DetailsScreen(
+              id: gameModelResults.id.toString(),
+              name: gameModelResults.name,
+            )),
         child: Card(
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.white70, width: 1),
             borderRadius: BorderRadius.circular(10),
           ),
+          color: Colors.black12,
           elevation: 5,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: 120,
-                width: Get.size.width,
-                clipBehavior: Clip.antiAlias,
-                child: FadeInImage(
-                  image: NetworkImage(
-                      gameModelResults.backgroundImage ?? defaultImage),
-                  placeholder: NetworkImage(defaultImage),
-                  fit: BoxFit.fill,
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topLeft:Radius.circular(8),topRight:Radius.circular(8))),
+              Stack(
+                children: [
+                  Container(
+                    height: 120,
+                    width: Get.size.width,
+                    clipBehavior: Clip.antiAlias,
+                    child: FadeInImage(
+                      image: NetworkImage(
+                          gameModelResults.backgroundImage ?? defaultImage),
+                      placeholder: NetworkImage(defaultImage),
+                      fit: BoxFit.fill,
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(8),
+                            topRight: Radius.circular(8))),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 10,top:10,),
+                    padding: EdgeInsets.only(left: 5,right: 5,top:2,bottom: 2),
+                    decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text(
+                      'Socre: ${gameModelResults.metacritic.toString()}',
+                      textAlign: TextAlign.center,
+                      style: Get.textTheme.caption!.regular
+                          .apply(color: AppColors.colorWhite),
+                    ),
+                  )
+                ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 8.0, top: 5),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -206,19 +270,15 @@ class HomeScreen extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Get.textTheme.subtitle2!.bold
-                          .apply(color: AppColors.colorBlack),
+                          .apply(color: AppColors.colorWhite),
                     ),
+                    5.0.widthSizedBox,
                     Text(
                       dateFormat(gameModelResults.released!),
                       style: Get.textTheme.caption!.regular
                           .apply(color: AppColors.colorBlack),
                     ),
                     5.0.widthSizedBox,
-                    Text(
-                      'Metacritic Score:${gameModelResults.metacritic.toString()}',
-                      style: Get.textTheme.caption!.regular
-                          .apply(color: AppColors.secondDarkColor),
-                    )
                   ],
                 ),
               )
