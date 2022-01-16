@@ -33,13 +33,17 @@ class DetailsScreen extends StatelessWidget {
               SliverAppBar(
                 pinned: true,
                 backgroundColor: AppColors.mainColor,
+                centerTitle: true,
                 expandedHeight: Get.size.height * 0.4,
                 flexibleSpace: FlexibleSpaceBar(
-                  title: Text(
-                    name!,
-                    textScaleFactor: 1,
-                    style: Get.textTheme.subtitle1!.bold
-                        .apply(color: AppColors.colorWhite),
+                  title: Padding(
+                    padding: const EdgeInsets.only(left:8.0),
+                    child: Text(
+                      name!,
+                      textScaleFactor: 1,
+                      style: Get.textTheme.subtitle1!.bold
+                          .apply(color: AppColors.colorWhite),
+                    ),
                   ),
                   background: Hero(
                     tag: id!,
@@ -49,7 +53,7 @@ class DetailsScreen extends StatelessWidget {
                             height: Get.size.height * 0.5,
                             width: Get.size.width,
                             fit: BoxFit.fill,
-                            placeholderFit:BoxFit.fill ,
+                            placeholderFit: BoxFit.fill,
                             placeholder: NetworkImage(defaultImage),
                             image: NetworkImage(image ?? defaultImage)),
                         Container(
@@ -82,16 +86,27 @@ class DetailsScreen extends StatelessWidget {
                               ),
                             ),
                             5.0.heightSizedBox,
-                            getTitle('genres'.tr),
-                            5.0.heightSizedBox,
+                            if (controller
+                                .detailsModelEntity!.genres!.isNotEmpty)
+                              getTitle('genres'.tr),
+                            if (controller
+                                .detailsModelEntity!.genres!.isNotEmpty)
+                              5.0.heightSizedBox,
                             getGeneraView(),
                             5.0.heightSizedBox,
-                            getTitle('publishers'.tr),
-                            5.0.heightSizedBox,
+                            if (controller
+                                .detailsModelEntity!.publishers!.isNotEmpty)
+                              getTitle('publishers'.tr),
+                            if (controller
+                                .detailsModelEntity!.publishers!.isNotEmpty)
+                              5.0.heightSizedBox,
                             getPublishersView(),
-                            getTitle('platforms'.tr),
+                            if (controller
+                                .detailsModelEntity!.platforms!.isNotEmpty)
+                              getTitle('platforms'.tr),
                             5.0.heightSizedBox,
                             getPlatformsView(),
+                            5.0.heightSizedBox,
                           ]),
                         ),
                     onLoading: getLoader(),
@@ -117,55 +132,62 @@ class DetailsScreen extends StatelessWidget {
   }
 
   getGeneraView() {
-    return Container(
-      height: Get.height * 0.22,
-      child: ListView.builder(
-          itemCount: controller.detailsModelEntity!.genres!.length,
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          physics: ScrollPhysics(),
-          itemBuilder: (context, index) {
-            return getItem(
-                name: controller.detailsModelEntity!.genres![index].name,
-                image: controller
-                    .detailsModelEntity!.genres![index].imageBackground);
-          }),
-    );
+    return controller.detailsModelEntity!.genres!.isNotEmpty
+        ? Container(
+            height: Get.height * 0.22,
+            child: ListView.builder(
+                itemCount: controller.detailsModelEntity!.genres!.length,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return getItem(
+                      name: controller.detailsModelEntity!.genres![index].name,
+                      image: controller
+                          .detailsModelEntity!.genres![index].imageBackground);
+                }),
+          )
+        : Container();
   }
 
   getPublishersView() {
-    return Container(
-      height: Get.height * 0.22,
-      child: ListView.builder(
-          itemCount: controller.detailsModelEntity!.publishers!.length,
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          physics: ScrollPhysics(),
-          itemBuilder: (context, index) {
-            return getItem(
-                name: controller.detailsModelEntity!.publishers![index].name,
-                image: controller
-                    .detailsModelEntity!.publishers![index].imageBackground);
-          }),
-    );
+    return controller.detailsModelEntity!.publishers!.isNotEmpty
+        ? Container(
+            height: Get.height * 0.22,
+            child: ListView.builder(
+                itemCount: controller.detailsModelEntity!.publishers!.length,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return getItem(
+                      name: controller
+                          .detailsModelEntity!.publishers![index].name,
+                      image: controller.detailsModelEntity!.publishers![index]
+                          .imageBackground);
+                }),
+          )
+        : Container();
   }
 
   getPlatformsView() {
-    return Container(
-      height: Get.height * 0.22,
-      child: ListView.builder(
-          itemCount: controller.detailsModelEntity!.platforms!.length,
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          physics: ScrollPhysics(),
-          itemBuilder: (context, index) {
-            return getItem(
-                name: controller
-                    .detailsModelEntity!.platforms![index].platform!.name,
-                image: controller.detailsModelEntity!.platforms![index]
-                    .platform!.imageBackground);
-          }),
-    );
+    return controller.detailsModelEntity!.platforms!.isNotEmpty
+        ? Container(
+            height: Get.height * 0.22,
+            child: ListView.builder(
+                itemCount: controller.detailsModelEntity!.platforms!.length,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return getItem(
+                      name: controller
+                          .detailsModelEntity!.platforms![index].platform!.name,
+                      image: controller.detailsModelEntity!.platforms![index]
+                          .platform!.imageBackground);
+                }),
+          )
+        : Container();
   }
 
   getTitle(String title) {
